@@ -1,5 +1,5 @@
 <?php include 'header.php'; ?> 
-
+<?php include 'conection.php'; ?>
 
 <div class="container-fluid">
 	<div class="slider-home">
@@ -17,19 +17,30 @@
 
 	<h1>Ponuda</h1>
 
-	<img src="slike/ponuda/11.jpg">
-	<img src="slike/ponuda/15.jpg">
-	<img src="slike/ponuda/18.jpg">
-	<img src="slike/ponuda/20.jpg">
-	<img src="slike/ponuda/8.jpg">
-	<img src="slike/ponuda/21.jpg">
+	<?php
+$sql = "SELECT * FROM proizvod";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        echo '<a href="menu.php?id='.$row["id"].'"><img src="slike/ponuda/'.$row["foto"].'"></a>';
+
+    }
+} else {
+    echo "0 results";
+}
+$conn->close();
+?>
+
+
 
 
 
 	
 	<div class="container bg-light forma-home">
 		<div class="row">
-			<div class="col-4 forma-slika">
+			<!--<div class="col-4 forma-slika">
 
 				</div>
 
@@ -87,7 +98,7 @@
 
 				</form>
 
-				</div>
+				</div>-->
 
 		</div>
 		
@@ -96,7 +107,7 @@
 
 <div class="container">
 
-<form>
+<form id="kontaktiranje">
 	<div class="row">
 		<div class="col-12 text-center p-5">
 		<img src="slike/meal.png" height="100px">
@@ -104,24 +115,29 @@
 
 		</div>
 		<div class="col-6 pb-3">
-				<input type="text" name="ime" placeholder="Ime" class="form-control">
+				<input type="text" name="ime" placeholder="Ime" class="form-control" id="imeKorisnika" required>
 		</div>
 
 		<div class="col-6 pb-3">
-			<input type="text" name="pitanje" placeholder="Pitanje" class="form-control">
+			<textarea type="text" name="pitanje" placeholder="Pitanje" class="form-control" id="porukaKorisnika" required></textarea>
 		</div>
 
 		<div class="col-6">
-			<input type="email" name="email" placeholder="E-mail" class="form-control">	
+			<input type="email" name="email" placeholder="E-mail" class="form-control" id="mailKorisnika" required>	
 		</div>
 
 		<div class="col-6">
-		<button type="submit" class="btn btn-danger">Pošalji upit</button>	
+		<button class="btn btn-danger" onclick="return kontaktFormaPocetna();" id="dugme">Pošalji upit</button>	
 		</div>
 
 
 	</div>
 </form>
+<br>
+<br>
+<br>
+<div class="col-12" id="display" width="500px" height="70px"></div>
+
 </div>
 
 
@@ -131,11 +147,5 @@
 
 
 </div>
-
-
-
-
-
-
 
 <?php include 'footer.php'; ?> 
